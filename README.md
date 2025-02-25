@@ -92,7 +92,6 @@ Since the infrastructure is consistently provisioned using Terraform and configu
 A restore script will be used to restore the database from backups, ensuring minimal data loss and a quick recovery using `restore.sh`.
 
 
-
 ## Conclusion
 Following these steps will ensure a fully automated, secure, and scalable deployment of the Django application on AWS.
 

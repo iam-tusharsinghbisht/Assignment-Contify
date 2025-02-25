@@ -164,7 +164,7 @@ resource "aws_instance" "db" {
 
   monitoring = true
 
-  user_data = base64encode(file("/modules/ec2/userdata.sh"))
+  user_data = base64encode(file("/modules/ec2/userdatadb.sh"))
 
   tags = {
     Name = "PostgreSQL-DB"
@@ -182,7 +182,7 @@ resource "aws_instance" "cicd" {
 
   monitoring = true
 
-  user_data = base64encode(file("/modules/ec2/userdata.sh"))
+  user_data = base64encode(file("/modules/ec2/userdatacicd.sh"))
 
   tags = {
     Name = "CI/CD"
