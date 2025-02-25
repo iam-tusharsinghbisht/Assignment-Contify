@@ -32,7 +32,7 @@ resource "aws_iam_policy" "s3_policy" {
             "Action": [
                 "s3:ListBucket"
             ],
-            "Resource": "arn:aws:s3:::logging-bucket-123/*"
+            "Resource": "arn:aws:s3:::app-bucket-123/*"
         },
         {
             "Effect": "Allow",
@@ -40,7 +40,7 @@ resource "aws_iam_policy" "s3_policy" {
                 "s3:GetObject",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::logging-bucket-123/*"
+            "Resource": "arn:aws:s3:::app-bucket-123/*"
         },
         {
             "Effect": "Allow",
