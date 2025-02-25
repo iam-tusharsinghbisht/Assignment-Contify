@@ -1,0 +1,99 @@
+pipeline {
+    agent any
+
+    environment {
+        CREDENTIALS_ID = 'dockerhub-cred'
+        APP_NAME = "app-name"
+        DOCKER_USERNAME = "dockerhub-username"
+        DEPLOY_USER = "user-name"
+        DEPLOY_SERVER = "instance-ip"
+        KEY_PATH = "/var/lib/jenkins/.ssh/id_rsa"
+    }
+
+    stages {
+        stage("Clone Code") {
+            steps {
+                script {
+                    echo "Cloning the code from GitHub repository!"
+                    git url: "git-url", branch: "main"
+                    echo "Repository cloned successfully"
+                }
+            }
+        }
+
+        stage("Build Django App") {
+            steps {
+                script {
+                    echo "Setting up Python environment and installing dependencies"
+                    sh """
+                        python3 -m venv venv
+                        source venv/bin/activate
+                        pip install --upgrade pip
+                        pip install -r requirements.txt
+                        python manage.py migrate
+                        python manage.py collectstatic --noinput
+                        deactivate
+                    """
+                }
+            }
+        }
+
+        stage("Run Tests") {
+            steps {
+                script {
+                    echo "Running Django Tests"
+                    sh """
+                        source venv/bin/activate
+                        python manage.py test
+                        deactivate
+                    """
+                }
+            }
+        }
+
+        stage("Build Docker Image") {
+            steps {
+                script {
+                    echo "Building Docker Image"
+                    sh "docker build -t ${DOCKER_USERNAME}/${APP_NAME}:latest ."
+                }
+            }
+        }
+
+        stage("Push Docker Image") {
+            steps {
+                script {
+                    echo "Pushing Docker Image to remote container registry"
+                    withCredentials([usernamePassword(credentialsId: CREDENTIALS_ID, 
+                                                     usernameVariable: 'USERNAME', 
+                                                     passwordVariable: 'PASSWORD')]) {
+                        sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
+                        sh "docker push ${DOCKER_USERNAME}/${APP_NAME}:latest"
+                    }
+                }
+            }
+        }
+
+        stage("Deploy to Server") {
+            steps {
+                script {
+                    sshagent(['ssh-credentials-id']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no -i ${KEY_PATH} ${DEPLOY_USER}@${DEPLOY_SERVER} << 'EOF'
+                            echo "Pulling Docker image"
+                            docker pull ${DOCKER_USERNAME}/${APP_NAME}:latest
+                            
+                            echo "Stopping and Removing old container"
+                            docker stop ${APP_NAME} || true
+                            docker rm ${APP_NAME} || true
+                            
+                            echo "Running new Docker container"
+                            docker run -d --name ${APP_NAME} -p 8080:8080 ${DOCKER_USERNAME}/${APP_NAME}:latest
+                        EOF
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
