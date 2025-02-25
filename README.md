@@ -13,9 +13,11 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
   ```
 
 ### 1.2 Define Terraform Configuration
-- Inside `main.tf` to define AWS resources:
+- You need to be in smae directory as `main.tf`.
 
-- Create VPC, subnets, NAT Gateway, EC2 instances, ALB, RDS for PostgreSQL, and S3 bucket for logs.
+- VPC, subnets, NAT Gateway, EC2 instances, ALB, RDS for PostgreSQL, and S3 bucket are inside modules folder for better management.
+
+- Update variable values in `terraform.tfvars` file.
 
 - Apply Terraform configuration:
   ```bash
@@ -46,14 +48,37 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
   ansible-playbook -i inventory setup.yml
   ```
 
-Create Jenkins Pipeline using the Jenkins file provided in the CICD folder.
-    - Install jenkins in CICD instance
-    - Create a freestyle pipeline
-    - Set the pipleine to get script(CICD/Jenkinsfile) from Github SCM
-    - Save the pipeline
-    - Create a webhook on Github so any changes in github repo will trigger the pipeline.
+## 3. CI/CD Pipeline Setup
 
-Setup cronjob to automatically backup database daily
+### 3.1 Jenkins Setup
+- Install Jenkins on the CI/CD EC2 instance:
+  ```bash
+  sudo apt update
+  sudo apt install -y openjdk-17-jdk
+  ```
+
+  ```bash
+  curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee
+    /usr/share/keyrings/jenkins-keyring.asc > /dev/null echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]
+    https://pkg.jenkins.io/debian binary/ | sudo tee
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+  sudo apt update
+  sudo apt install -y jenkins
+  sudo systemctl start jenkins
+  ```
+
+- Check if Jenkins is running:
+  ```bash
+  sudo systemctl status jenkins
+  ```
+
+### 3.2 Configure CI/CD Pipeline
+- Create a freestyle pipeline
+- Set the pipleine to get script(CICD/Jenkinsfile) from Github SCM
+- Save the pipeline
+- Create a webhook on Github so any changes in github repo will trigger the pipeline.
+
+
 
 ## Conclusion
 Following these steps will ensure a fully automated, secure, and scalable deployment of the Django application on AWS, adhering to best practices.

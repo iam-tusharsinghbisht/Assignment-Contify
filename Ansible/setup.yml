@@ -1,0 +1,19 @@
+---
+- name: Setup with Nginx.
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install Nginx packages
+
+- name: Setup with Gunicorn.
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install Gunicorn packages
+
+- name: Setup PostgreSQL
+  hosts: postgre
+  become: yes
+  tasks:
+    - name: Install PostgreSQL packages
+
