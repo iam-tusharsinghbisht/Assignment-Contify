@@ -12,12 +12,39 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
   terraform --version
   ```
 
-Please follow the below steps to Create the infrastructure using terraform:
-    Step 1: cd Infrastructure
-    Step 2: terraform init
-    Step 3: terraform validate
-    Step 4: Terraformm plan
-    Step 5: terraform apply
+### 1.2 Define Terraform Configuration
+- Inside `main.tf` to define AWS resources:
+
+- Create VPC, subnets, NAT Gateway, EC2 instances, ALB, RDS for PostgreSQL, and S3 bucket for logs.
+
+- Apply Terraform configuration:
+  ```bash
+  terraform init
+  terraform validate
+  terraform plan
+  terraform apply -var-file=terraform.tfvars
+  ```
+
+## 2. Configuration Management using Ansible
+
+### 2.1 Install Ansible
+- Install Ansible on the CI/CD EC2 instance:
+  ```bash
+  sudo apt update
+  sudo apt install -y ansible
+  ```
+
+### 2.2 Configure Ansible Playbooks
+- Create playbooks to:
+  - Install & configure Nginx as a reverse proxy.
+  - Install & configure Django + Gunicorn.
+  - Setup PostgreSQL.
+  - Implement log rotation.
+
+- Run the Ansible playbook:
+  ```bash
+  ansible-playbook -i inventory setup.yml
+  ```
 
 Create Jenkins Pipeline using the Jenkins file provided in the CICD folder.
     - Install jenkins in CICD instance
@@ -27,6 +54,9 @@ Create Jenkins Pipeline using the Jenkins file provided in the CICD folder.
     - Create a webhook on Github so any changes in github repo will trigger the pipeline.
 
 Setup cronjob to automatically backup database daily
+
+## Conclusion
+Following these steps will ensure a fully automated, secure, and scalable deployment of the Django application on AWS, adhering to best practices.
 
 
 
