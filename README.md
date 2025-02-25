@@ -13,7 +13,7 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
   ```
 
 ### 1.2 Define Terraform Configuration
-- You need to be in smae directory as `main.tf`.
+- You need to be in same directory as Infrastrucute/`main.tf`.
 
 - VPC, subnets, NAT Gateway, EC2 instances, ALB, RDS for PostgreSQL, and S3 bucket are inside modules folder for better management.
 
@@ -80,7 +80,7 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
 
 
 ## 4. Disaster Recovery:
-- Setup cronjob to automatically backup database daily
+- Setup cronjob to automatically backup database daily inside PostgreSQL database Instance using `backup.sh` script.
 
 - Ensure the application can be restored within 1 hour in case of failure.
 
@@ -90,7 +90,7 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
 Since the infrastructure is consistently provisioned using Terraform and configured via Ansible, the entire environment can be recreated swiftly within 1 hour after a disaster.
 
 #### Database Restoration:
-A restore script will be used to restore the database from backups, ensuring minimal data loss and a quick recovery.
+A restore script will be used to restore the database from backups, ensuring minimal data loss and a quick recovery using `restore.sh`.
 
 
 

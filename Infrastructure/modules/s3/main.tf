@@ -1,9 +1,9 @@
 # S3 Bucket for Logs
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "logging-bucket-123"
+  bucket = "app-bucket-123"
 
   tags = {
-    Name = "log-bucket"
+    Name = "app-bucket"
   }
 }
 
