@@ -2,7 +2,7 @@
 
 # Set variables
 BACKUP_DIR="/var/backups/postgresql"
-DB_NAME="app-db"
+DB_NAME="db_name"
 BACKUP_FILE="$BACKUP_DIR/$DB_NAME-$(date +"%F-%H%M%S").sql"
 S3_BUCKET="s3://app-bucket-123"
 
