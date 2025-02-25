@@ -41,7 +41,6 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
   - Install & configure Nginx as a reverse proxy.
   - Install & configure Django + Gunicorn.
   - Setup PostgreSQL.
-  - Implement log rotation.
 
 - Run the Ansible playbook:
   ```bash

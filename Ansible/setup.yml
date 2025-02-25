@@ -1,19 +1,19 @@
 ---
-- name: Setup with Nginx.
+- name: Install & configure Nginx as a reverse proxy.
   hosts: webservers
   become: yes
   tasks:
-    - name: Install Nginx packages
+    - name: Install required packages
 
-- name: Setup with Gunicorn.
+- name: Install & configure Django + Gunicorn.
   hosts: webservers
   become: yes
   tasks:
-    - name: Install Gunicorn packages
+    - name: Install required packages
 
 - name: Setup PostgreSQL
   hosts: postgre
   become: yes
   tasks:
-    - name: Install PostgreSQL packages
+    - name: Install required packages
 
