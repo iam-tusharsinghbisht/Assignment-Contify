@@ -79,9 +79,23 @@ This document provides a step-by-step guide to automate the deployment of a Pyth
 - Create a webhook on Github so any changes in github repo will trigger the pipeline.
 
 
+## 4. Disaster Recovery:
+- Setup cronjob to automatically backup database daily
+
+- Ensure the application can be restored within 1 hour in case of failure.
+
+### Disaster Recovery Plan
+
+#### Infrastructure Reprovisioning:
+Since the infrastructure is consistently provisioned using Terraform and configured via Ansible, the entire environment can be recreated swiftly within 1 hour after a disaster.
+
+#### Database Restoration:
+A restore script will be used to restore the database from backups, ensuring minimal data loss and a quick recovery.
+
+
 
 ## Conclusion
-Following these steps will ensure a fully automated, secure, and scalable deployment of the Django application on AWS, adhering to best practices.
+Following these steps will ensure a fully automated, secure, and scalable deployment of the Django application on AWS.
 
 
 
